@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const UserModel = require("../db/models/user.model");
+const UserModel = require('../db/models/user.model');
 const userModel = require('../db/models/user.model');
 
 class UserService {
@@ -36,7 +36,27 @@ class UserService {
     return response;
   }
 
+  async getUsertStats() {
+    const date = new Date();
+    const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
+    console.log(lastYear);
+    const data = await userModel.aggregate([
+      { $match: { createdAt: { $gte: lastYear } } },
+      {
+        $project: {
+          month: { $month: "$createdAt" },
+        },
+      },
+      {
+        $group: {
+          _id: '$month',
+          total: { $sum: 1 },
+        },
+      },
+    ]);
+    console.log(data);
+    return data;
+  }
 }
-
 
 module.exports = UserService;
