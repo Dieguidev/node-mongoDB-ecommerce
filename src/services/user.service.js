@@ -15,20 +15,6 @@ class UserService {
     return saveUser;
   }
 
-
-  async login(user) {
-    const findUser = await UserModel.findOne({ email: user.email });
-    console.log(findUser);
-    if (!findUser) {
-      return { mesage: 'user not found' };
-    }
-
-    if (bcrypt.compareSync(user.password, findUser.password)) {
-      return findUser;
-    } else {
-      return { mesage: 'password is incorrect' };
-    }
-  }
 }
 
 
