@@ -12,17 +12,12 @@ mongoose
   .then(() => console.log('bien conectado'))
   .catch(err => console.log(err)
 );
-
-routerApi(app);
-
-app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
-app.get('/', (req, res) => {
-  res.send('Hello Sopenca!');
-})
+routerApi(app);
 
+// app.use(express.urlencoded({ extended: true }));
 
 
 
