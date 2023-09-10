@@ -1,4 +1,5 @@
-const Joi = require('joi');
+// const Joi = require('joi');
+import Joi from 'joi';
 
 const id = Joi.string().length(24);
 const email = Joi.string().email();
@@ -8,29 +9,29 @@ const username = Joi.string().min(3).max(15);
 const limit = Joi.number().integer();
 const offset = Joi.number().integer();
 
-const createUserSchema = Joi.object({
+export const createUserSchema = Joi.object({
   email: email.required(),
   password: password.required(),
   username: username.required(),
 });
 
-const updateUserSchema = Joi.object({
+export const updateUserSchema = Joi.object({
   email: email,
   username: username,
 });
 
-const getUserSchema = Joi.object({
+export const loginUserSchema = Joi.object({
+  email: email.required(),
+  password: password.required(),
+})
+
+export const getUserSchema = Joi.object({
   id: id.required(),
 });
 
-const queryUserSchema = Joi.object({
+export const queryUserSchema = Joi.object({
   limit,
   offset,
 });
 
-module.exports = {
-  createUserSchema,
-  updateUserSchema,
-  getUserSchema,
-  queryUserSchema,
-};
+

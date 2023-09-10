@@ -1,11 +1,14 @@
-const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv');
+
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 dotenv.config();
 
 const verifyToken = (req, res, next) => {
-  const authHeader = req.headers.token;
+  const authHeader = req.headers.authorization;
+  console.log(authHeader);
   if (authHeader) {
     const token = authHeader.split(' ')[1];
+    console.log(token);
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
       if (err) res.status(403).json('Token is not valid!');
       req.user = user;
@@ -16,7 +19,7 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-const verifyTokenAndAuthorization = (req, res, next) => {
+export const verifyTokenAndAuthorization = (req, res, next) => {
   verifyToken(req, res, () => {
     if (req.user.id === req.params.id || req.user.isAdmin) {
       next();
@@ -26,7 +29,7 @@ const verifyTokenAndAuthorization = (req, res, next) => {
   });
 };
 
-const verifyTokenAndAdmin = (req, res, next) => {
+export const verifyTokenAndAdmin = (req, res, next) => {
   verifyToken(req, res, () => {
     if (req.user.isAdmin) {
       next();
@@ -36,8 +39,4 @@ const verifyTokenAndAdmin = (req, res, next) => {
   });
 };
 
-module.exports = {
-  verifyToken,
-  verifyTokenAndAuthorization,
-  verifyTokenAndAdmin,
-};
+

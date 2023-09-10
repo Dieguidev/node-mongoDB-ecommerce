@@ -1,14 +1,18 @@
-const express = require('express');
-const {
+
+import express from 'express';
+import {
   updateUser,
   deleteUser,
   getUser,
   getAllUsers,
   getUsertStats,
-} = require('../controllers/user.controller');
-const validatorHandler = require('../middleware/validator.handler');
-const { getUserSchema, updateUserSchema, queryUserSchema } = require('../schemas/user.schema');
-
+} from "../controllers/user.controller.js";
+import {
+  verifyTokenAndAuthorization,
+  verifyTokenAndAdmin,
+} from "../middleware/verifytoken.js";
+import  validatorHandler  from "../middleware/validator.handler.js";
+import { getUserSchema, updateUserSchema, queryUserSchema } from "../schemas/user.schemas.js";
 
 const router = express.Router();
 
@@ -20,9 +24,10 @@ router.put(
   '/:id',
   validatorHandler(getUserSchema, 'params'),
   validatorHandler(updateUserSchema, 'body'),
+  verifyTokenAndAuthorization,
   updateUser
 );
 router.delete('/:id', validatorHandler(getUserSchema, 'params'), deleteUser);
 
+export default router;
 
-module.exports = router;

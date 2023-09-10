@@ -1,13 +1,12 @@
-const boom = require('@hapi/boom');
-const bcrypt = require('bcrypt');
-const UserModel = require('../db/models/user.model');
-const userModel = require('../db/models/user.model');
+import boom from '@hapi/boom';
+import UserModel from '../db/models/user.model.js';
 
-class UserService {
+
+export default class UserService {
   constructor() {}
 
   async getUser(id) {
-    const user = await userModel.findById(id);
+    const user = await UserModel.findById(id);
     if(!user) {
       throw boom.notFound('user not found');
     }
@@ -16,7 +15,7 @@ class UserService {
 
   async getAllUsers(query) {
     const { limit, offset } = query;
-    const response = await userModel.find().skip(offset).limit(limit);
+    const response = await UserModel.find().skip(offset).limit(limit);
     return response;
   }
 
@@ -32,12 +31,12 @@ class UserService {
   }
 
   async updateUser(id, modifyUser) {
-    const response = await userModel.findByIdAndUpdate(id, modifyUser);
+    const response = await UserModel.findByIdAndUpdate(id, modifyUser);
     return response;
   }
 
   async deleteUser(id) {
-    const response = await userModel.findByIdAndDelete(id);
+    const response = await UserModel.findByIdAndDelete(id);
     return response;
   }
 
@@ -45,7 +44,7 @@ class UserService {
     const date = new Date();
     const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
 
-    const data = await userModel.aggregate([
+    const data = await UserModel.aggregate([
       { $match: { createdAt: { $gte: lastYear } } },
       {
         $project: {
@@ -63,4 +62,4 @@ class UserService {
   }
 }
 
-module.exports = UserService;
+

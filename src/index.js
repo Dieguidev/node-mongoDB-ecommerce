@@ -1,12 +1,19 @@
-const express = require('express');
+// const express = require('express');
+import express from 'express';
 const app = express();
-const cors = require('cors');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-const routerApi = require('./routes/index.route');
-const { logErrors, errorHandler, boomErrorHandler } = require('./middleware/error.handler');
-
+// const cors = require('cors');
+import cors from 'cors';
+// const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+// const dotenv = require('dotenv');
+import dotenv from 'dotenv';
+// const routerApi = require('./ro  utes/index.route');
+import {  routerApi } from './routes/index.js';
+// const { logErrors, errorHandler, boomErrorHandler } = require('./middleware/error.handler');
+import { logErrors, errorHandler, boomErrorHandler } from './middleware/error.handler.js';
 dotenv.config();
+
+
 
 mongoose
   .connect(process.env.MONGO_URL)

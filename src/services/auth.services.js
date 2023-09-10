@@ -1,13 +1,12 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+import User from "../db/models/user.model.js";
 
-const bcrypt = require('bcrypt');
-const UserModel = require("../db/models/user.model");
-
-class AuthService {
+export default class AuthService {
   constructor() {}
 
   async login(user) {
-    const findUser = await UserModel.findOne({ email: user.email });
+    const findUser = await User.findOne({ email: user.email });
 
     if (!findUser) {
       return { mesage: 'user not found' };
@@ -27,9 +26,7 @@ class AuthService {
       return { mesage: 'password is incorrect' };
     }
   }
-
-
 }
 
 
-module.exports = AuthService;
+
