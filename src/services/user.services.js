@@ -1,4 +1,4 @@
-import boom from '@hapi/boom';
+
 import UserModel from '../db/models/user.model.js';
 
 export default class UserService {
@@ -6,9 +6,6 @@ export default class UserService {
 
   async getUser(id) {
     const user = await UserModel.findById(id);
-    if (!user) {
-      throw boom.notFound('user not found');
-    }
     return user;
   }
 
@@ -33,17 +30,11 @@ export default class UserService {
     const user = await UserModel.findByIdAndUpdate(id, modifyUser, {
       new: true,
     });
-    if (!user) {
-      throw boom.notFound('user not found');
-    }
     return user;
   }
 
   async deleteUser(id) {
     const user = await UserModel.findByIdAndDelete(id);
-    if (!user) {
-      throw boom.notFound('user not found');
-    }
     return user;
   }
 

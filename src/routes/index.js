@@ -4,6 +4,8 @@ const router = express.Router();
 import  usersRouter  from './user.routes.js';
 import  authRouter  from './auth.routes.js';
 import  productsRouter  from './product.routes.js';
+import  cartsRouter  from './cart.routes.js';
+
 
 
 
@@ -13,6 +15,7 @@ export function routerApi(app) {
   router.use('/users', usersRouter);
   router.use('/auth', authRouter);
   router.use('/products', productsRouter);
+  router.use('/carts', cartsRouter);
 }
 
 

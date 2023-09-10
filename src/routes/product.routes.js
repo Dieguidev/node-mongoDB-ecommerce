@@ -13,6 +13,7 @@ import {
   queryProductSchema,
   updateProductSchema,
 } from '../schemas/product.schemas.js';
+import { verifyTokenAndAdmin } from '../middleware/verifytoken.js';
 
 const router = express.Router();
 
@@ -22,15 +23,15 @@ router.get(
   validatorHandler(getProductSchema, 'params'),
   getProductById
 );
-router.post('/', validatorHandler(createProductSchema, 'body'), createProduct);
+router.post('/',verifyTokenAndAdmin, validatorHandler(createProductSchema, 'body'), createProduct);
 router.put(
-  '/:id',
+  '/:id',verifyTokenAndAdmin,
   validatorHandler(getProductSchema, 'params'),
   validatorHandler(updateProductSchema, 'body'),
   updateProduct
 );
 router.delete(
-  '/:id',
+  '/:id',verifyTokenAndAdmin,
   validatorHandler(getProductSchema, 'params'),
   deleteProduct
 );
