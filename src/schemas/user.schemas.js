@@ -8,16 +8,18 @@ const username = Joi.string().min(3).max(15);
 
 const limit = Joi.number().integer();
 const offset = Joi.number().integer();
+const isAdmin = Joi.boolean();
 
 export const createUserSchema = Joi.object({
   email: email.required(),
   password: password.required(),
   username: username.required(),
+  isAdmin
 });
 
 export const updateUserSchema = Joi.object({
-  email: email,
-  username: username,
+  email,
+  username
 });
 
 export const loginUserSchema = Joi.object({

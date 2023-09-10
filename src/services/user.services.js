@@ -1,4 +1,3 @@
-
 import UserModel from '../db/models/user.model.js';
 
 export default class UserService {
@@ -15,11 +14,17 @@ export default class UserService {
     return response;
   }
 
+  async getUserByUsername(username) {
+    const findUser = await UserModel.findOne({username});
+    return findUser;
+  }
+
+  async getUserByEmail(email) {
+    const findUser = await UserModel.findOne({email});
+    return findUser;
+  }
+
   async createUser(newUser) {
-    const findUser = await UserModel.findOne({ email: newUser.email });
-    if (findUser) {
-      return { mesage: 'user already exist' };
-    }
     const userModel = new UserModel(newUser);
     const saveUser = await userModel.save();
     saveUser.password = undefined;

@@ -14,6 +14,7 @@ import {
 import  validatorHandler  from "../middleware/validator.handler.js";
 import { getUserSchema, updateUserSchema, queryUserSchema } from "../schemas/user.schemas.js";
 
+
 const router = express.Router();
 
 
@@ -24,7 +25,7 @@ router.put(
   '/:id',
   validatorHandler(getUserSchema, 'params'),
   validatorHandler(updateUserSchema, 'body'),
-  verifyTokenAndAuthorization,
+  // verifyTokenAndAuthorization,
   updateUser
 );
 router.delete('/:id', validatorHandler(getUserSchema, 'params'), deleteUser);

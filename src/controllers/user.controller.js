@@ -31,6 +31,14 @@ export const getUsertStats = async (req, res, next) => {
 
 export const register = async (req, res,next) => {
   try {
+    const {username, email} = req.body;
+
+    const searchUsername = await userServices.getUserByUsername(username);
+    const searchEmail = await userServices.getUserByEmail(email);
+    if (searchEmail || searchUsername) {
+      return res.status(400).json({message: 'email or username exist'})
+    }
+
     const saveUser = await userServices.createUser(req.body);
     res.status(201).json(saveUser);
   } catch (error) {

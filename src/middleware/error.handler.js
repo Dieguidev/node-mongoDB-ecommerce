@@ -36,7 +36,7 @@ export function mongooseErrorHandler(err, req, res, next) {
     // Manejo de errores de casting de ObjectId de Mongoose
     return res.status(400).json({
       statusCode: 400,
-      message: 'UserId not found',
+      message: 'Id not found',
       error: err.message,
     });
   }
