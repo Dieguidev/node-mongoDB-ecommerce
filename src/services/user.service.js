@@ -8,15 +8,15 @@ class UserService {
 
   async getUser(id) {
     const user = await userModel.findById(id);
-    console.log(user);
     if(!user) {
       throw boom.notFound('user not found');
     }
     return user;
   }
 
-  async getAllUsers() {
-    const response = await userModel.find();
+  async getAllUsers(query) {
+    const { limit, offset } = query;
+    const response = await userModel.find().skip(offset).limit(limit);
     return response;
   }
 
@@ -25,9 +25,9 @@ class UserService {
     if (findUser) {
       return { mesage: 'user already exist' };
     }
-    newUser.password = bcrypt.hashSync(newUser.password, 10);
     const userModel = new UserModel(newUser);
     const saveUser = await userModel.save();
+    saveUser.password= undefined;
     return saveUser;
   }
 
@@ -44,7 +44,7 @@ class UserService {
   async getUsertStats() {
     const date = new Date();
     const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
-    console.log(lastYear);
+
     const data = await userModel.aggregate([
       { $match: { createdAt: { $gte: lastYear } } },
       {
@@ -59,7 +59,6 @@ class UserService {
         },
       },
     ]);
-    console.log(data);
     return data;
   }
 }

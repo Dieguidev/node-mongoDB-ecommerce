@@ -7,11 +7,13 @@ const {
   getUsertStats,
 } = require('../controllers/user.controller');
 const validatorHandler = require('../middleware/validator.handler');
-const { getUserSchema, updateUserSchema } = require('../schemas/user.schema');
+const { getUserSchema, updateUserSchema, queryUserSchema } = require('../schemas/user.schema');
+
 
 const router = express.Router();
 
-router.get('/', getAllUsers);
+
+router.get('/',validatorHandler(queryUserSchema, 'query'), getAllUsers);
 router.get('/stats', getUsertStats);
 router.get('/:id', validatorHandler(getUserSchema, 'params'), getUser);
 router.put(
@@ -21,5 +23,6 @@ router.put(
   updateUser
 );
 router.delete('/:id', validatorHandler(getUserSchema, 'params'), deleteUser);
+
 
 module.exports = router;

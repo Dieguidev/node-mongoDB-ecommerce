@@ -11,21 +11,21 @@ const getUser = async (req, res,next) => {
   }
 };
 
-const getAllUsers = async (req, res) => {
+const getAllUsers = async (req, res, next) => {
   try {
-    const users = await userService.getAllUsers();
+    const users = await userService.getAllUsers(req.query);
     res.status(200).json(users);
   } catch (error) {
-    res.status(400).json(error.message);
+    next(error);
   }
 };
 
-const getUsertStats = async (req, res) => {
+const getUsertStats = async (req, res, next) => {
   try {
     const userStats = await userService.getUsertStats();
     res.status(200).json(userStats);
   } catch (error) {
-    res.status(400).json(error.message);
+    next(error);
   }
 };
 
