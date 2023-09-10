@@ -4,6 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const routerApi = require('./routes/index.route');
+const { logErrors, errorHandler, boomErrorHandler } = require('./middleware/error.handler');
 
 dotenv.config();
 
@@ -12,12 +13,15 @@ mongoose
   .then(() => console.log('bien conectado'))
   .catch(err => console.log(err)
 );
+// app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
 routerApi(app);
+app.use(logErrors);
+app.use(boomErrorHandler);
+app.use(errorHandler);
 
-// app.use(express.urlencoded({ extended: true }));
 
 
 

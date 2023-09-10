@@ -1,13 +1,25 @@
 const express = require('express');
-const { verifyTokenAndAuthorization } = require('../middleware/verifytoken');
-const { updateUser, deleteUser, getUser, getAllUsers, getUsertStats } = require('../controllers/user.controller');
+const {
+  updateUser,
+  deleteUser,
+  getUser,
+  getAllUsers,
+  getUsertStats,
+} = require('../controllers/user.controller');
+const validatorHandler = require('../middleware/validator.handler');
+const { getUserSchema, updateUserSchema } = require('../schemas/user.schema');
+
 const router = express.Router();
 
-router.get('/',getAllUsers)
-router.get('/stats', getUsertStats)
-router.get('/:id', getUser);
-router.put('/:id', updateUser);
-router.delete('/:id',deleteUser);
-
+router.get('/', getAllUsers);
+router.get('/stats', getUsertStats);
+router.get('/:id', validatorHandler(getUserSchema, 'params'), getUser);
+router.put(
+  '/:id',
+  validatorHandler(getUserSchema, 'params'),
+  validatorHandler(updateUserSchema, 'body'),
+  updateUser
+);
+router.delete('/:id', validatorHandler(getUserSchema, 'params'), deleteUser);
 
 module.exports = router;

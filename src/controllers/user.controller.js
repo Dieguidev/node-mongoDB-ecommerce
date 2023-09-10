@@ -1,12 +1,13 @@
 const UserService = require('../services/user.service');
 const userService = new UserService();
 
-const getUser = async (req, res) => {
+const getUser = async (req, res,next) => {
   try {
+    console.log(req.params.id);
     const user = await userService.getUser(req.params.id);
     res.status(200).json(user);
   } catch (error) {
-    res.status(400).json(error.message);
+    next(error);
   }
 };
 

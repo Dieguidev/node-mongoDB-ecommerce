@@ -1,3 +1,4 @@
+const boom = require('@hapi/boom');
 const bcrypt = require('bcrypt');
 const UserModel = require('../db/models/user.model');
 const userModel = require('../db/models/user.model');
@@ -6,8 +7,12 @@ class UserService {
   constructor() {}
 
   async getUser(id) {
-    const response = await userModel.findById(id);
-    return response;
+    const user = await userModel.findById(id);
+    console.log(user);
+    if(!user) {
+      throw boom.notFound('user not found');
+    }
+    return user;
   }
 
   async getAllUsers() {
