@@ -1,13 +1,12 @@
 import boom from '@hapi/boom';
 import UserModel from '../db/models/user.model.js';
 
-
 export default class UserService {
   constructor() {}
 
   async getUser(id) {
     const user = await UserModel.findById(id);
-    if(!user) {
+    if (!user) {
       throw boom.notFound('user not found');
     }
     return user;
@@ -26,18 +25,26 @@ export default class UserService {
     }
     const userModel = new UserModel(newUser);
     const saveUser = await userModel.save();
-    saveUser.password= undefined;
+    saveUser.password = undefined;
     return saveUser;
   }
 
   async updateUser(id, modifyUser) {
-    const response = await UserModel.findByIdAndUpdate(id, modifyUser);
-    return response;
+    const user = await UserModel.findByIdAndUpdate(id, modifyUser, {
+      new: true,
+    });
+    if (!user) {
+      throw boom.notFound('user not found');
+    }
+    return user;
   }
 
   async deleteUser(id) {
-    const response = await UserModel.findByIdAndDelete(id);
-    return response;
+    const user = await UserModel.findByIdAndDelete(id);
+    if (!user) {
+      throw boom.notFound('user not found');
+    }
+    return user;
   }
 
   async getUsertStats() {
@@ -48,7 +55,7 @@ export default class UserService {
       { $match: { createdAt: { $gte: lastYear } } },
       {
         $project: {
-          month: { $month: "$createdAt" },
+          month: { $month: '$createdAt' },
         },
       },
       {
@@ -61,5 +68,3 @@ export default class UserService {
     return data;
   }
 }
-
-

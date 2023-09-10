@@ -23,15 +23,23 @@ export function boomErrorHandler(err, req, res, next) {
 
 }
 
-// function ormErrorHandler(err, req, res, next) {
-//   if (err instanceof ValidationError) {
-//     res.status(409).json({
-//       statusCode: 409,
-//       message: err.name,
-//       errors: err.errors
-//     });
-//   }
-//   next(err);
-// }
 
+export function mongooseErrorHandler(err, req, res, next) {
+  if (err.name === 'ValidationError') {
+    // Manejo de errores de validación de Mongoose
+    return res.status(400).json({
+      statusCode: 400,
+      message: 'ValidationError',
+      errors: err.errors,
+    });
+  } else if (err.name === 'CastError' && err.kind === 'ObjectId') {
+    // Manejo de errores de casting de ObjectId de Mongoose
+    return res.status(400).json({
+      statusCode: 400,
+      message: 'UserId not found',
+      error: err.message,
+    });
+  }
+  next(err);
+}
 

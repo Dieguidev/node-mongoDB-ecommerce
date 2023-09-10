@@ -10,7 +10,7 @@ import dotenv from 'dotenv';
 // const routerApi = require('./ro  utes/index.route');
 import {  routerApi } from './routes/index.js';
 // const { logErrors, errorHandler, boomErrorHandler } = require('./middleware/error.handler');
-import { logErrors, errorHandler, boomErrorHandler } from './middleware/error.handler.js';
+import { logErrors, errorHandler, boomErrorHandler, mongooseErrorHandler } from './middleware/error.handler.js';
 dotenv.config();
 
 
@@ -26,6 +26,7 @@ app.use(cors());
 
 routerApi(app);
 app.use(logErrors);
+app.use(mongooseErrorHandler);
 app.use(boomErrorHandler);
 app.use(errorHandler);
 
