@@ -10,7 +10,6 @@ import {
 } from "../controllers/user.controller.js";
 import {
   verifyTokenAndAuthorization,
-  verifyTokenAndAdmin,
 } from "../middleware/verifytoken.js";
 import  validatorHandler  from "../middleware/validator.handler.js";
 import { getUserSchema, updateUserSchema, queryUserSchema } from "../schemas/user.schemas.js";

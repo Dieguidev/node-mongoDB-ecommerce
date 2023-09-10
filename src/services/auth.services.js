@@ -19,8 +19,6 @@ export default class AuthService {
           isAdmin: findUser.isAdmin,
         }, process.env.JWT_SECRET,
         { expiresIn: '1h' , algorithm: 'HS256'})
-
-      console.log(findUser, token);
       return {findUser, token};
     } else {
       return { mesage: 'password is incorrect' };
