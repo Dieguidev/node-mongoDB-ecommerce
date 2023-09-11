@@ -6,8 +6,9 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/index.js",
+    "star": "node src/index.js",
     "lint": "eslint",
-    "start": "echo \"Error: no test specified\" && exit 1"
+    "e2e": "jest --config ./jest-e2e.json --verbose"
   },
   "keywords": [],
   "author": "",
@@ -29,6 +30,7 @@
     "eslint": "^8.49.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
+    "jest": "^29.6.4",
     "prettier": "^3.0.3"
   }
 }
