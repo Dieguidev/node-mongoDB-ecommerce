@@ -35,3 +35,25 @@ Enumera aquí los requisitos previos para ejecutar el proyecto:
   ```bash
   npm install
   ```
+## Configuración
+
+Crea un archivo .env en el directorio raíz del proyecto y agrega las siguientes variables de entorno:
+
+  MONGO_URL=  
+  JWT_SECRET=
+  PORT=
+  DOMAIN=
+  
+## Ejecución
+
+Iniciar el Servidor: Utiliza el siguiente comando para iniciar el servidor:
+
+  ```bash
+  npm run start
+  ```
+
+Si deseas iniciar en modo desarrollador:
+
+  ```bash
+  npm run dev
+  ```
