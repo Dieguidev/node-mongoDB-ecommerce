@@ -1,37 +1,41 @@
-// const express = require('express');
 import express from 'express';
-const app = express();
-// const cors = require('cors');
 import cors from 'cors';
-// const mongoose = require('mongoose');
 import mongoose from 'mongoose';
-// const dotenv = require('dotenv');
 import dotenv from 'dotenv';
-// const routerApi = require('./ro  utes/index.route');
-import {  routerApi } from './routes/index.js';
-// const { logErrors, errorHandler, boomErrorHandler } = require('./middleware/error.handler');
-import { logErrors, errorHandler, boomErrorHandler, mongooseErrorHandler } from './middleware/error.handler.js';
+import {
+  logErrors,
+  errorHandler,
+  boomErrorHandler,
+  mongooseErrorHandler,
+} from './middleware/error.handler.js';
+
+import { routerApi } from './routes/index.js';
+
+const app = express();
+
 dotenv.config();
-
-
 
 mongoose
   .connect(process.env.MONGO_URL)
   .then(() => console.log('bien conectado'))
-  .catch(err => console.log(err)
-);
-// app.use(express.urlencoded({ extended: true }));
+  .catch((err) => console.log(err));
+
 app.use(express.json());
-app.use(cors());
+
+const corsOptions = {
+  origin: process.env.DOMAIN || 'http://localhost:3000',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  optionsSuccessStatus: 204,
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 routerApi(app);
 app.use(logErrors);
 app.use(mongooseErrorHandler);
 app.use(boomErrorHandler);
 app.use(errorHandler);
-
-
-
 
 const port = process.env.PORT || 3000;
 
