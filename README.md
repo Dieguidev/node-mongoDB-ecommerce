@@ -39,7 +39,7 @@ Enumera aquí los requisitos previos para ejecutar el proyecto:
 
 Crea un archivo .env en el directorio raíz del proyecto y agrega las siguientes variables de entorno:
 
-  ``bash
+  ```bash
   MONGO_URL=  
   JWT_SECRET=
   PORT=
