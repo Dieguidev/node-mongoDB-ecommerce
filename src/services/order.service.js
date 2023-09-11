@@ -1,3 +1,4 @@
+import boom from '@hapi/boom';
 import OrderModel from '../db/models/order.model.js';
 import ProductService from '../services/product.services.js';
 const productService = new ProductService();
@@ -8,18 +9,16 @@ export default class OrderService {
   async createOrder(order) {
     let amount = 0;
 
-    // Usamos Promise.all para esperar que todas las llamadas a getProductById se completen.
     await Promise.all(
       order.products.map(async (product) => {
         const searchProduct = await productService.getProductById(
-          product.productId
+          product.productId,
         );
         amount += searchProduct.price * product.quantity;
-      })
+      }),
     );
 
     order.amount = amount;
-    console.log(order);
 
     const newOrder = await OrderModel.create(order);
     return newOrder;
@@ -37,18 +36,35 @@ export default class OrderService {
 
   async getOrderByUserId(userId) {
     const order = await OrderModel.find({ userId });
+    if (order.length === 0) {
+      throw boom.notFound('user no orders');
+    }
+
     return order;
   }
 
-  async updateOrder(id, order) {
-    const updatedOrder = await OrderModel.findByIdAndUpdate(
-      req.params.id,
-      {
-        $set: req.body,
-      },
-      { new: true },
+  async getOrderMonthlyIncome() {
+    const date = new Date();
+    const lastMonth = new Date(date.setMonth(date.getMonth() - 1));
+    const previousMonth = new Date(
+      new Date().setMonth(lastMonth.getMonth() - 1),
     );
-    return updatedOrder;
+    const income = await OrderModel.aggregate([
+      { $match: { createdAt: { $gte: previousMonth } } },
+      {
+        $project: {
+          month: { $month: "$createdAt" },
+          sales: "$amount",
+        },
+      },
+      {
+        $group: {
+          _id: "$month",
+          total: { $sum: "$sales" },
+        },
+      },
+    ]);
+    return income
   }
 
   async deleteOrder(id) {
