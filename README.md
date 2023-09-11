@@ -22,13 +22,16 @@ Enumera aquí los requisitos previos para ejecutar el proyecto:
 
   ```bash
   git clone https://github.com/Dieguidev/node-mongoDB-ecommerce.git
+  ```
 
 2. Cambia al directorio del proyecto clonado utilizando el siguiente comando en la terminal:
 
   ```bash
   cd node-mongoDB-ecommerce
+  ```
 
 3. Instalar Dependencias:
 
   ```bash
   npm install
+  ```
