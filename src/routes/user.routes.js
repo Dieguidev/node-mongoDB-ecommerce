@@ -1,4 +1,3 @@
-
 import express from 'express';
 
 import {
@@ -7,28 +6,35 @@ import {
   getUser,
   getAllUsers,
   getUsertStats,
-} from "../controllers/user.controller.js";
+} from '../controllers/user.controller.js';
 import {
   verifyTokenAndAuthorization,
-} from "../middleware/verifytoken.js";
-import  validatorHandler  from "../middleware/validator.handler.js";
-import { getUserSchema, updateUserSchema, queryUserSchema } from "../schemas/user.schemas.js";
-
+  verifyTokenAndAdmin,
+} from '../middleware/verifytoken.js';
+import validatorHandler from '../middleware/validator.handler.js';
+import {
+  getUserSchema,
+  updateUserSchema,
+  queryUserSchema,
+} from '../DTO/user.dto.js';
 
 const router = express.Router();
 
-
-router.get('/',validatorHandler(queryUserSchema, 'query'), getAllUsers);
-router.get('/stats', getUsertStats);
-router.get('/:id', validatorHandler(getUserSchema, 'params'), getUser);
+router.get(
+  '/',
+  verifyTokenAndAdmin,
+  validatorHandler(queryUserSchema, 'query'),
+  getAllUsers,
+);
+router.get('/stats',verifyTokenAndAdmin, getUsertStats);
+router.get('/:id',verifyTokenAndAuthorization, validatorHandler(getUserSchema, 'params'), getUser);
 router.put(
   '/:id',
   validatorHandler(getUserSchema, 'params'),
   validatorHandler(updateUserSchema, 'body'),
-  // verifyTokenAndAuthorization,
-  updateUser
+  verifyTokenAndAuthorization,
+  updateUser,
 );
-router.delete('/:id', validatorHandler(getUserSchema, 'params'), deleteUser);
+router.delete('/:id',verifyTokenAndAdmin, validatorHandler(getUserSchema, 'params'), deleteUser);
 
 export default router;
-

@@ -1,19 +1,21 @@
-import express, { query } from 'express';
+import express from 'express';
 import {
   getAllProducts,
   getProductById,
   createProduct,
   updateProduct,
   deleteProduct,
+  getProductsByCategory,
 } from '../controllers/product.controller.js';
 import validatorHandler from '../middleware/validator.handler.js';
 import {
   createProductSchema,
   getProductSchema,
+  getProductsByCategorySchema,
   queryProductSchema,
   updateProductSchema,
-} from '../schemas/product.schemas.js';
-import { verifyTokenAndAdmin } from '../middleware/verifytoken.js';
+} from '../DTO/product.dto.js';
+import { verifyTokenAndAdmin, verifyTokenAndAuthorization } from '../middleware/verifytoken.js';
 
 const router = express.Router();
 
@@ -21,19 +23,27 @@ router.get('/', validatorHandler(queryProductSchema, 'query'), getAllProducts);
 router.get(
   '/:id',
   validatorHandler(getProductSchema, 'params'),
-  getProductById
+  getProductById,
 );
-router.post('/',verifyTokenAndAdmin, validatorHandler(createProductSchema, 'body'), createProduct);
+router.get('/findByCategory',verifyTokenAndAuthorization,validatorHandler(getProductsByCategorySchema, 'body'), getProductsByCategory);
+router.post(
+  '/',
+  verifyTokenAndAdmin,
+  validatorHandler(createProductSchema, 'body'),
+  createProduct,
+);
 router.put(
-  '/:id',verifyTokenAndAdmin,
+  '/:id',
+  verifyTokenAndAdmin,
   validatorHandler(getProductSchema, 'params'),
   validatorHandler(updateProductSchema, 'body'),
-  updateProduct
+  updateProduct,
 );
 router.delete(
-  '/:id',verifyTokenAndAdmin,
+  '/:id',
+  verifyTokenAndAdmin,
   validatorHandler(getProductSchema, 'params'),
-  deleteProduct
+  deleteProduct,
 );
 
 export default router;

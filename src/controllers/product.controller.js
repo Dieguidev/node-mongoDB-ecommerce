@@ -19,8 +19,23 @@ export const getProductById = async (req, res, next) => {
   }
 }
 
+export const getProductsByCategory = async (req, res, next) => {
+  try {
+    const {category} =req.body
+    const products = await productServices.getProductsByCategory(category);
+    res.status(200).json(products);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export const createProduct = async (req, res, next) => {
   try {
+    const {title}=req.body;
+    const findProduct = await productServices.getProductByTitle(title);
+    if(findProduct){
+      return res.status(400).json({msg:"Product already exists"});
+    }
     const product = await productServices.createProduct(req.body);
     res.status(201).json(product);
   } catch (error) {
@@ -30,6 +45,11 @@ export const createProduct = async (req, res, next) => {
 
 export const updateProduct = async (req, res, next) => {
   try {
+    if (req.body.title) {
+      const findProduct = await productServices.getProductByTitle(req.body.title);
+
+      if (findProduct) return res.status(400).json({msg:"Product already exists"});
+    }
     const product = await productServices.updateProduct(req.params.id, req.body);
     res.status(200).json(product);
   } catch (error) {
@@ -39,7 +59,8 @@ export const updateProduct = async (req, res, next) => {
 
 export const deleteProduct = async (req, res, next) => {
   try {
-    const product = await productServices.deleteProduct(req.params.id);
+    const {id} =req.params
+    await productServices.deleteProduct(id);
     res.status(200).json('Product deleted successfully');
   } catch (error) {
     next(error);

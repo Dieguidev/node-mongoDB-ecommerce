@@ -13,7 +13,7 @@ import {
   verifyTokenAndAuthorization,
 } from '../middleware/verifytoken.js';
 import validatorHandler from '../middleware/validator.handler.js';
-import { getCartSchema, queryCartSchema } from '../schemas/cart.Schema.js';
+import { getCartSchema, queryCartSchema } from '../DTO/cart.dto.js';
 
 const router = express.Router();
 

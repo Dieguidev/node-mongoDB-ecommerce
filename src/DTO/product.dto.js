@@ -4,10 +4,11 @@ const id = Joi.string().length(24);
 const title = Joi.string().min(3);
 const description = Joi.string().min(3);
 const image = Joi.string().uri();
-const categories = Joi.array();
+const categories = Joi.array().items(Joi.string());
 const size = Joi.string();
 const color = Joi.string();
 const price = Joi.number();
+const category = Joi.string();
 
 const limit = Joi.number().integer();
 const offset = Joi.number().integer();
@@ -34,6 +35,10 @@ export const updateProductSchema = Joi.object({
 
 export const getProductSchema = Joi.object({
   id: id.required(),
+})
+
+export const getProductsByCategorySchema = Joi.object({
+  category: category.required(),
 })
 
 export const queryProductSchema = Joi.object({

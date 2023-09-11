@@ -5,10 +5,8 @@ dotenv.config();
 
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
-  console.log(authHeader);
   if (authHeader) {
     const token = authHeader.split(' ')[1];
-    console.log(token);
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
       if (err) res.status(403).json('Token is not valid!');
       req.user = user;

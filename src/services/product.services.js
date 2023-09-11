@@ -10,6 +10,11 @@ export default class ProductService {
     return response;
   }
 
+  async getProductsByCategory(category) {
+    const products = await ProductModel.find({ categories:{$in: [category]} });
+    return products;
+  }
+
   async getProductById(id) {
     const product = await ProductModel.findById(id);
     if (!product) {
@@ -18,13 +23,13 @@ export default class ProductService {
     return product;
   }
 
+  async getProductByTitle(title) {
+    const product = await ProductModel.findOne({ title });
+
+    return product;
+  }
+
   async createProduct(newProduct) {
-    const findProduct = await ProductModel.findOne({
-      name: newProduct.name,
-    });
-    if (findProduct) {
-      return { mesage: 'product already exist' };
-    }
     const productModel = new ProductModel(newProduct);
     const saveProduct = await productModel.save();
     return saveProduct;
@@ -47,4 +52,5 @@ export default class ProductService {
     }
     return product;
   }
+
 }
